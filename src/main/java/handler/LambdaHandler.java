@@ -5,16 +5,12 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-
-//public class LambdaHandler {
     public class LambdaHandler implements RequestHandler<Map<String,String>, String> {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -23,16 +19,14 @@ import java.util.*;
         {
         LambdaLogger logger = context.getLogger();
         String response = "200 OK";
-        // log execution details
-        logger.log("ENVIRONMENT VARIABLES: " + gson.toJson(System.getenv()));
         logger.log("CONTEXT: " + gson.toJson(context));
-        // process event
         logger.log("EVENT: " + gson.toJson(event));
-        logger.log("EVENT TYPE: " + event.getClass());
+
 
         final String TAG_EXTENSION = ".tag";
-        final String DOCUMENT_PATH = "/Users/darnold/Desktop/doc.txt";
-        final String LEXICON_PATH = "/Users/darnold/Desktop/lexicon.txt";
+        final String DOCUMENT_PATH = event.get("documentPath");
+        final String LEXICON_PATH = event.get("lexiconPath");
+        logger.log("DOC PATH: " + DOCUMENT_PATH + " and LEX PATH: " + LEXICON_PATH);
 
         ArrayList<String> documentData = new ArrayList<String>();
         Map<String, String> lexMap = new HashMap<String, String>();
